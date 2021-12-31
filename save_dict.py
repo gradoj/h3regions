@@ -1,6 +1,7 @@
 from pathlib import Path
 import json
 import os
+import h3
 
 def serialize_sets(obj):
     if isinstance(obj, set):

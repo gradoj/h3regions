@@ -30,12 +30,11 @@ def geth3(lat,lng,alt):
     home_hex=h3.geo_to_h3(lat,lng,res)
 
     region_hex=h3idx.h3idx_get(home_hex,rings,res_offset=4)
-
     
+    num_hex=0
     for r in region_hex:
-
         for h in region_hex[r]:
-
+            num_hex+=1
             gjhexhome=h3.h3_to_geo_boundary(h,geo_json=True)
 
             mpolyhome = kml.newmultigeometry(name=r)
@@ -50,7 +49,7 @@ def geth3(lat,lng,alt):
                 polhome.style.linestyle.color = simplekml.Color.white
             polhome.style.polystyle.color = simplekml.Color.changealpha("75", colors[r])
             
-
+    print('number of polygons: ', num_hex)
     #print(kml.kml())
     return kml.kml(format=False)
 

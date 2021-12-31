@@ -1,5 +1,6 @@
 import h3
 import json
+from time import time
 
 try:
     from hex_dict import hex_dict
@@ -16,16 +17,15 @@ def h3idx_get(h3hex, rings, res_offset=5):
     '''
     global hex_dict
     res=h3.h3_get_resolution(h3hex)
-    #filelist = Path(os.getcwd()).glob('data/*.h3idx')
 
     # generate the larger hex rings centered around the cameras center of view
     # use 7 hex here as h3idx files use 7 as a maximum resolution
     
+    start=time()
     view_hex={}
     view_hex[res]=h3.k_ring(h3hex,rings)
-
     # fill up a dictionary of hexes of the our current view
-    for i in range(0,8): 
+    for i in range(0,res+res_offset+1): 
         if i != res:
             view_hex[i]=set()
         for h in view_hex[res]:
@@ -33,28 +33,15 @@ def h3idx_get(h3hex, rings, res_offset=5):
                 view_hex[i].add(h3.h3_to_parent(h,i)) 
             else:
                 view_hex[i].update(h3.h3_to_children(h,i))
+    end = time()
+    print(f'It took {end - start} seconds to create the hex view set')
 
     #print(view_hex)
-    #common_hex={}
-    
+    start = time()
     idx_dict={}
-    #hex_dict={}
-    #for f in filelist:
     for region in hex_dict:
-        #print('filename', f.name)
-        #filename=f.name
-        #region=filename[0:filename.find('.')]
         #print('region',region)
-
-        #file = open('data/'+filename, "rb")
-        
-        #hexbytes = file.read(8) 
-        #while hexbytes:
-            #print(hexbytes.hex())
-            #ba=bytearray(hexbytes)
-            #ba.reverse()
         for region_hex in hex_dict[region]:
-            #region_hex=ba.hex()[1:] # remove the leading zero
 
             # check if resolution is too high to display at this altitude
             if h3.h3_get_resolution(region_hex) > (res+res_offset):
@@ -67,10 +54,8 @@ def h3idx_get(h3hex, rings, res_offset=5):
                     idx_dict[region]=set()
                     idx_dict[region].add(region_hex)
                     continue
-            
-            #hexbytes = file.read(8)
-        #file.close()
-    #print(hex_dict)
+    end = time()
+    print(f'It took {end - start} seconds to find region hex that match view hex')
     return idx_dict
 
 
