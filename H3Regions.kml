@@ -2,16 +2,18 @@
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
 	<NetworkLink>
 		<name>Helium LoRaWAN H3 Regions</name>
-		<description>Displays H3 grid for all Helium LoRaWAN regions. Right click and Refresh to download new view.</description>
+		<description>Displays H3 grid for all Helium LoRaWAN regions. View will automatically update 5 seconds after stopping.</description>
 		<Link>
 			<!-- <href>http://localhost:3000/api?</href> -->
 			<href>https://h3regions.vercel.app/api?</href>
-			<viewRefreshMode>onRequest</viewRefreshMode>
-			<!-- <viewRefreshMode>onStop</viewRefreshMode> -->
-			<!-- <viewRefreshTime>5</viewRefreshTime> -->
-			<!-- 
+			<!-- <viewRefreshMode>onRequest</viewRefreshMode> -->
+			<viewRefreshMode>onStop</viewRefreshMode>
+			<viewRefreshTime>5</viewRefreshTime>
+			<!-- HPO - Hex Polygon Opacity 
+				 VO - View Offset. If viewing res0 level all hexes above resolution res0+VO will not be displayed.
+				      Increasing by 1 will display at lower resolution. Decreasing will display at higher resolution
 			-->
-			<viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth];CAMERA=[cameraAlt]</viewFormat>
+			<viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth];CAMERA=[cameraAlt];HPO=75;VO=3</viewFormat>
 		</Link>
 	</NetworkLink>
 </kml>

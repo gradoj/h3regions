@@ -23,13 +23,13 @@ colors={'Unknown':simplekml.Color.white,
         'RU864':simplekml.Color.orange,
         'EU433':simplekml.Color.brown}
 
-def geth3(lat,lng,alt):
+def geth3(lat,lng,alt,hpo,vo):
     kml=simplekml.Kml(name='H3Regions')
     res=int(-1.044 * log(float(alt)) + 15.861)
     rings=int(26.097 * pow(float(alt),-0.17) )
     home_hex=h3.geo_to_h3(lat,lng,res)
 
-    region_hex=h3idx.h3idx_get(home_hex,rings,res_offset=4)
+    region_hex=h3idx.h3idx_get(home_hex,rings,res_offset=vo)
     
     num_hex=0
     for r in region_hex:
@@ -47,7 +47,7 @@ def geth3(lat,lng,alt):
                 polhome.style.linestyle.color = simplekml.Color.changealpha("50", colors[r] )
             else:
                 polhome.style.linestyle.color = simplekml.Color.white
-            polhome.style.polystyle.color = simplekml.Color.changealpha("75", colors[r])
+            polhome.style.polystyle.color = simplekml.Color.changealpha(str(hpo), colors[r])
             
     print('number of polygons: ', num_hex)
     #print(kml.kml())
@@ -67,8 +67,10 @@ class handler(BaseHTTPRequestHandler):
         query = urlparse(self.path).query
         query=unquote(query)
 
-        bbox,alt=query.split(';')
+        bbox,alt,hpo,vo=query.split(';')
 
+        hpo = int(hpo.split('HPO=')[1])
+        vo = int(vo.split('VO=')[1])
         # get the altitude of the camera
         alt = float(alt.split('CAMERA=')[1])
         west,south,east,north=bbox.split('BBOX=')[1].split(',')
@@ -82,7 +84,7 @@ class handler(BaseHTTPRequestHandler):
         lng = ((east - west) / 2) + west
         lat = ((north - south) / 2) + south
 
-        h3regions=geth3(lat=lat,lng=lng,alt=alt)
+        h3regions=geth3(lat=lat,lng=lng,alt=alt,hpo=hpo,vo=vo)
 
         in_memory_zip = BytesIO()
 
