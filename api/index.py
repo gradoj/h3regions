@@ -22,7 +22,8 @@ colors={'Unknown':simplekml.Color.white,
         'KR920':simplekml.Color.pink,
         'IN865':simplekml.Color.purple,
         'RU864':simplekml.Color.orange,
-        'EU433':simplekml.Color.brown}
+        'EU433':simplekml.Color.brown,
+        'CD900':simplekml.Color.beige}
 
 def geth3(lat,lng,alt,hpo,vo):
     kml=simplekml.Kml(name='H3Regions')
