@@ -7,15 +7,16 @@ from io import BytesIO
 from urllib.parse import urlparse, unquote
 from http.server import BaseHTTPRequestHandler
 
-
 colors={'Unknown':simplekml.Color.white,
         'EU868':simplekml.Color.yellow,
         'US915':simplekml.Color.blue,
         'CN779':simplekml.Color.red,
         'AU915':simplekml.Color.seagreen,
+        'AU915-SB1':simplekml.Color.aquamarine,
         'CN470':simplekml.Color.red,
         'AS923-1':simplekml.Color.lawngreen,
         'AS923-1B':simplekml.Color.salmon,
+        'AS923-1C':simplekml.Color.peachpuff,
         'AS923-2':simplekml.Color.lightgrey,
         'AS923-3':simplekml.Color.lightskyblue,
         'AS923-4':simplekml.Color.darkblue,
